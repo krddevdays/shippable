@@ -1,0 +1,51 @@
+jobs:
+  - name: build
+    type: runSh
+    triggerMode: serial
+    allowPublicAccess: false
+    runtime:
+      container: false
+    steps:
+      - IN: krddevdays
+      - TASK:
+          - script: >
+              CONTAINER_NAME_LATEST=$DOCKER_IMAGE_NAME:latest
+
+              echo $CONTAINER_NAME_LATEST
+
+              if [ ! -z $KRDDEVDAYS_GIT_TAG_NAME ]; then
+              CONTAINER_NAME_TAG=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_TAG_NAME; fi
+
+              echo $CONTAINER_NAME_TAG
+
+              if [ ! -z $KRDDEVDAYS_GIT_BRANCH ]; then
+              CONTAINER_NAME_BRANCH=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_BRANCH;
+              fi
+
+              echo $CONTAINER_NAME_BRANCH
+
+              if [ ! -z $_KRDDEVDAYS__COMMIT ]; then
+              CONTAINER_NAME_SHA=$DOCKER_IMAGE_NAME:$(echo $_KRDDEVDAYS__COMMIT 
+              | awk '{ string=substr($0, 0, 7); print string; }'); fi
+
+              echo $CONTAINER_NAME_SHA
+
+              echo "Building images"
+
+              sudo  docker build $([ "${BRANCH_NAME}" = "master" ] && echo "-t
+              $CONTAINER_NAME_LATEST") \
+                                 $([ ! -z $CONTAINER_NAME_TAG ] && echo "-t $CONTAINER_NAME_TAG") \
+                                 $([ ! -z $CONTAINER_NAME_BRANCH ] && echo "-t $CONTAINER_NAME_BRANCH") \
+                                 $([ ! -z $CONTAINER_NAME_SHA ] && echo "-t $CONTAINER_NAME_SHA") \
+                                 . || exit 1
+resources:
+  - name: krddevdays
+    type: gitRepo
+    integration: GitHub
+    versionTemplate:
+      sourceName: krddevdays/krddevdays.ru
+      buildOnCommit: true
+      buildOnPullRequest: false
+      buildOnPullRequestClose: false
+      buildOnRelease: false
+      buildOnTagPush: false
