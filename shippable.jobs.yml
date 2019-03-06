@@ -7,7 +7,7 @@ jobs:
       container: false
     steps:
       - IN: krddevdays
-      - TASK:
+      - TASK:CONTAINER_NAME_TAG
           - script: >
               CONTAINER_NAME_LATEST=$DOCKER_IMAGE_NAME:latest
 
@@ -32,9 +32,9 @@ jobs:
 
               echo "Building images"
 
-              sudo  docker build $([ "${BRANCH_NAME}" = "master" ] && echo "-t
+              sudo  docker build ./IN/krddevdays $([ "${KRDDEVDAYS_GIT_BRANCH}" = "master" ] && echo "-t
               $CONTAINER_NAME_LATEST") \
-                                 $([ ! -z $CONTAINER_NAME_TAG ] && echo "-t $CONTAINER_NAME_TAG") \
+                                 $([ ! -z $ ] && echo "-t $CONTAINER_NAME_TAG") \
                                  $([ ! -z $CONTAINER_NAME_BRANCH ] && echo "-t $CONTAINER_NAME_BRANCH") \
                                  $([ ! -z $CONTAINER_NAME_SHA ] && echo "-t $CONTAINER_NAME_SHA") \
                                  . || exit 1
