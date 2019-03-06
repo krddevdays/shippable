@@ -9,20 +9,15 @@ resources:
       buildOnPullRequestClose: false
       buildOnRelease: false
       buildOnTagPush: false
-      
-resources:
-  - name: dockerHub
-    type: integration
-    integration: dockerHub
 
 jobs:
   - name: build_and_push
     type: runSh     
+    integrations:
+      - dockerHub
     steps:
       - IN: krddevdays
       - TASK:
-          integrations:
-            - dockerHub
           runtime:
             options:
               env:
