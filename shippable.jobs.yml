@@ -9,7 +9,7 @@ jobs:
             options:
               env:
                 - DOCKER_IMAGE_NAME: "krddevdays/krd.dev"
-          script: >
+          - script: >
             if [ "$KRDDEVDAYS_GIT_BRANCH" != "master" ]; then
               CONTAINER_NAME=$DOCKER_IMAGE_NAME:latest;
             elif [[ -n $KRDDEVDAYS_GIT_TAG_NAME ]]; then
@@ -21,7 +21,7 @@ jobs:
             fi
       - TASK:
           name: "build"
-          script: >
+          - script: >
             cd $(shipctl get_resource_state krddevdays)
             sudo docker build -t "$CONTAINER_NAME" . || exit 1
       - TASK:
@@ -33,4 +33,4 @@ jobs:
           script: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin || exit 1
       - TASK:
           name: "push"
-          script: docker push "$CONTAINER_NAME"
+          - script: docker push "$CONTAINER_NAME"
