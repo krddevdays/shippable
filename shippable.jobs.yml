@@ -20,5 +20,7 @@ jobs:
             else
               CONTAINER_NAME=$DOCKER_IMAGE_NAME:$(echo $KRDDEVDAYS_COMMIT | awk '{ string=substr($0, 0, 7); print string; }');
             fi
+            
+            cd $(shipctl get_resource_state krddevdays)
 
             sudo docker build -t "$CONTAINER_NAME" ./IN/krddevdays || exit 1
