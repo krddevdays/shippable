@@ -9,33 +9,33 @@ resources:
       buildOnPullRequestClose: false
       buildOnRelease: false
       buildOnTagPush: false
+      
+resources:
+  - name: docker_image
+    type: image
+    integration: dockerHub
+    versionTemplate:
+      sourceName: "krddevdays/krd.dev"
 
 jobs:
   - name: build_and_push
     type: runSh     
-    integrations:
-      - dockerHub
     steps:
       - IN: krddevdays
+      - IN: docker_image
       - TASK:
-          runtime:
-            options:
-              env:
-                - DOCKER_IMAGE_NAME: "krddevdays/krd.dev"
           script:
             - |
               if [ "${KRDDEVDAYS_GIT_BRANCH}" == "master" ]; then
-                CONTAINER_NAME=$DOCKER_IMAGE_NAME:latest;
+                shipctl put_resource_state_multi docker_image "versionName=latest";
               elif [[ -n $KRDDEVDAYS_GIT_TAG_NAME ]]; then
-                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_TAG_NAME;
+                shipctl put_resource_state_multi docker_image "versionName=${KRDDEVDAYS_GIT_TAG_NAME}";
               elif [[ -n $KRDDEVDAYS_GIT_BRANCH ]]; then
-                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_BRANCH;
+                shipctl put_resource_state_multi docker_image "versionName=${KRDDEVDAYS_GIT_BRANCH}"
               else
-                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$(echo $KRDDEVDAYS_COMMIT | awk '{ string=substr($0, 0, 7); print string; }');
+                exit 1
               fi
-              
-              cd $(shipctl get_resource_state krddevdays)
-              
-              docker build -t $CONTAINER_NAME .
-              
-              docker push $CONTAINER_NAME
+            - cd $(shipctl get_resource_state krddevdays)
+            - docker build -t $CONTAINER_NAME .
+            - docker login -u $DOCKER_IMAGE_INTEGRATION_USERNAME -p $DOCKER_IMAGE_INTEGRATION_TOKEN
+            - docker push $(shipctl get_resource_version_key "$RES_OUT_IMG" "sourceName"):$(shipctl get_resource_version_key "$RES_OUT_IMG" "versionName")
