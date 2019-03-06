@@ -22,7 +22,7 @@ jobs:
     type: runSh     
     steps:
       - IN: site
-      - showBuildStatus: true
+        showBuildStatus: true
       - TASK:
           runtime:
             options:
