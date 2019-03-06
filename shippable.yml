@@ -25,12 +25,12 @@ jobs:
       - TASK:
           script:
             - |
-              if [ "${SITE_GIT_BRANCH}" == "master" ]; then
+              if [ "${SITE_BRANCH}" == "master" ]; then
                 IMAGE_TAG="latest";
               elif [[ -n $SITE_GIT_TAG_NAME ]]; then
                 IMAGE_TAG="${SITE_GIT_TAG_NAME}";
-              elif [[ -n $SITE_GIT_BRANCH ]]; then
-                IMAGE_TAG="=${SITE_GIT_BRANCH}";
+              elif [[ -n $SITE_BRANCH ]]; then
+                IMAGE_TAG="${SITE_BRANCH}";
               else
                 exit 1
               fi
