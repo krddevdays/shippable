@@ -11,14 +11,14 @@ jobs:
         - script: >
             DOCKER_IMAGE_NAME="krddevdays/krd.dev"
 
-            if [ "$KRDDEVDAYS_GIT_BRANCH" -eq "master" ]; then
+            if [ "$KRDDEVDAYS_GIT_BRANCH" != "master" ]; then
               CONTAINER_NAME=$DOCKER_IMAGE_NAME:latest;
-            elif [ ! -z $KRDDEVDAYS_GIT_TAG_NAME ]; then
+            elif [[ -n $KRDDEVDAYS_GIT_TAG_NAME ]]; then
               CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_TAG_NAME;
-            elif [ ! -z $KRDDEVDAYS_GIT_BRANCH ]; then
+            elif [[ -n $KRDDEVDAYS_GIT_BRANCH ]]; then
               CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_BRANCH;
-            if [ ! -z $_KRDDEVDAYS_COMMIT ]; then
-              CONTAINER_NAME=$DOCKER_IMAGE_NAME:$(echo $_KRDDEVDAYS_COMMIT | awk '{ string=substr($0, 0, 7); print string; }');
+            else
+              CONTAINER_NAME=$DOCKER_IMAGE_NAME:$(echo $KRDDEVDAYS_COMMIT | awk '{ string=substr($0, 0, 7); print string; }');
             fi
 
             sudo docker build -t "$CONTAINER_NAME" ./IN/krddevdays || exit 1
