@@ -9,7 +9,36 @@ resources:
       buildOnPullRequestClose: false
       buildOnRelease: false
       buildOnTagPush: false
+
 integrations:
   hub:
     - integrationName: dockerHub
       type: dockerRegistryLogin
+
+jobs:
+  - name: build_and_push
+    type: runSh     
+    steps:
+      - IN: krddevdays
+      - TASK:
+          runtime:
+            options:
+              env:
+                - DOCKER_IMAGE_NAME: "krddevdays/krd.dev"
+          script:
+            - |
+              if [ "${KRDDEVDAYS_GIT_BRANCH}" == "master" ]; then
+                CONTAINER_NAME=$DOCKER_IMAGE_NAME:latest;
+              elif [[ -n $KRDDEVDAYS_GIT_TAG_NAME ]]; then
+                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_TAG_NAME;
+              elif [[ -n $KRDDEVDAYS_GIT_BRANCH ]]; then
+                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_BRANCH;
+              else
+                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$(echo $KRDDEVDAYS_COMMIT | awk '{ string=substr($0, 0, 7); print string; }');
+              fi
+              
+              cd $(shipctl get_resource_state krddevdays)
+              
+              docker build -t $CONTAINER_NAME .
+              
+              docker push $CONTAINER_NAME
