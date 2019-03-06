@@ -10,17 +10,14 @@ resources:
       buildOnRelease: false
       buildOnTagPush: false
 
-integrations:
-  hub:
-    - integrationName: dockerHub
-      type: dockerRegistryLogin
-
 jobs:
   - name: build_and_push
     type: runSh     
     steps:
       - IN: krddevdays
       - TASK:
+          integrations:
+            - dockerHub
           runtime:
             options:
               env:
