@@ -9,28 +9,32 @@ jobs:
             options:
               env:
                 - DOCKER_IMAGE_NAME: "krddevdays/krd.dev"
-          - script: >
-            if [ "$KRDDEVDAYS_GIT_BRANCH" != "master" ]; then
-              CONTAINER_NAME=$DOCKER_IMAGE_NAME:latest;
-            elif [[ -n $KRDDEVDAYS_GIT_TAG_NAME ]]; then
-              CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_TAG_NAME;
-            elif [[ -n $KRDDEVDAYS_GIT_BRANCH ]]; then
-              CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_BRANCH;
-            else
-              CONTAINER_NAME=$DOCKER_IMAGE_NAME:$(echo $KRDDEVDAYS_COMMIT | awk '{ string=substr($0, 0, 7); print string; }');
-            fi
+          script:
+            - >
+              if [ "$KRDDEVDAYS_GIT_BRANCH" != "master" ]; then
+                CONTAINER_NAME=$DOCKER_IMAGE_NAME:latest;
+              elif [[ -n $KRDDEVDAYS_GIT_TAG_NAME ]]; then
+                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_TAG_NAME;
+              elif [[ -n $KRDDEVDAYS_GIT_BRANCH ]]; then
+                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$KRDDEVDAYS_GIT_BRANCH;
+              else
+                CONTAINER_NAME=$DOCKER_IMAGE_NAME:$(echo $KRDDEVDAYS_COMMIT | awk '{ string=substr($0, 0, 7); print string; }');
+              fi
       - TASK:
           name: "build"
-          - script: >
-            cd $(shipctl get_resource_state krddevdays)
-            sudo docker build -t "$CONTAINER_NAME" . || exit 1
+          script:
+            - >
+              cd $(shipctl get_resource_state krddevdays)
+              sudo docker build -t "$CONTAINER_NAME" . || exit 1
       - TASK:
           name: "login"
           runtime:
             options:
               env:
                 - secure: fxfQoqKgr7acKAMlQNpsDGl1KyLODlgqNO647g0yytyg8r8v/Af/JDacRxfUln+26vXP++c39PZcv9ifHPXoS4/xi3k+IJ2huXLct2Rov3dgERtY3UNu6mdXJaGQ4rj9DRZt41YuS8hOc5AsXfso8Xp6NS0z6Ziwp+MVCkHnqBn0T36jMzo/BXspE3jPbU+vMCTdAZXKpYVpAg5bozLG7UNEtmyH4Uu0sjrxX/XKYnOeYRuMmfyv3Lu6cComTZrniW+etrekG8ZSjjfg7mmMKxZrg3kMfJMaL/4ObkZlLwyrJ+AUI/H8dEdvwDqGyVFX2pi6GI6dJyyNM3Lkfq6PDw==
-          - script: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin || exit 1
+          script:
+            - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin || exit 1
       - TASK:
           name: "push"
-          - script: docker push "$CONTAINER_NAME"
+          script:
+            - docker push "$CONTAINER_NAME"
