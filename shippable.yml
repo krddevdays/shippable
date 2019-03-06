@@ -10,11 +10,9 @@ resources:
       buildOnRelease: false
       buildOnTagPush: false
 
-  - name: docker_hub
-    integration: dockerHub
-
   - name: docker_image
     type: image
+    integration: docker_hub
     versionTemplate:
       sourceName: "krddevdays/krd.dev"
 
@@ -23,7 +21,6 @@ jobs:
     type: runSh     
     steps:
       - IN: site
-      - IN: docker_hub
       - TASK:
           script:
             - |
@@ -39,7 +36,7 @@ jobs:
             - cd $(shipctl get_resource_state site)
             - IMAGE_NAME=$(shipctl get_resource_version_key docker_image "sourceName")
             - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-            - docker login -u $DOCKER_HUB_INTEGRATION_USERNAME -p $DOCKER_HUB_INTEGRATION_TOKEN
+            - docker login -u $(shipctl get_integration_resource_field docker_image "username") -p $(shipctl get_integration_resource_field docker_image "token")
             - docker push $IMAGE_NAME:$IMAGE_TAG
       - OUT: docker_image
     on_success:
