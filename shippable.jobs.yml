@@ -8,9 +8,9 @@ jobs:
     steps:
       - IN: krddevdays
       - TASK:
-        - env:
-          - DOCKER_IMAGE_NAME: "krddevdays/krd.dev"
         - script: |
+            DOCKER_IMAGE_NAME="krddevdays/krd.dev"
+            
             if [ "$KRDDEVDAYS_GIT_BRANCH" -eq "master" ]; then
               CONTAINER_NAME=$DOCKER_IMAGE_NAME:latest;
             elif [ ! -z $KRDDEVDAYS_GIT_TAG_NAME ]; then
