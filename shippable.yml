@@ -3,7 +3,7 @@ resources:
     type: gitRepo
     integration: GitHub
     versionTemplate:
-      sourceName: "krddevdays/krd.dev"
+      sourceName: krddevdays/krd.dev
       buildOnCommit: true
       buildOnPullRequest: false
       buildOnPullRequestClose: false
