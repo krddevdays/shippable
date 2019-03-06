@@ -3,7 +3,7 @@ resources:
     type: gitRepo
     integration: GitHub
     versionTemplate:
-      sourceName: krddevdays/krd.dev
+      sourceName: krddevdays/krddevdays.ru
       buildOnCommit: true
       buildOnPullRequest: false
       buildOnPullRequestClose: false
@@ -14,7 +14,7 @@ resources:
     type: image
     integration: docker_hub
     versionTemplate:
-      sourceName: "krddevdays/krd.dev"
+      sourceName: krddevdays/krd.dev
       versionName: "latest"
 
 jobs:
