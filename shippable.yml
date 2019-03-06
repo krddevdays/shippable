@@ -9,3 +9,7 @@ resources:
       buildOnPullRequestClose: false
       buildOnRelease: false
       buildOnTagPush: false
+integrations:
+  hub:
+    - integrationName: dockerHub
+      type: dockerRegistryLogin
