@@ -23,23 +23,27 @@ jobs:
     steps:
       - IN: site
       - TASK:
+          runtime:
+            options:
+              env:
+                - RES_OUT_IMG: "docker_image"
           script:
             - |
-              if [ "${SITE_BRANCH}" == "master" ]; then
+              if [ "$SITE_BRANCH" == "master" ]; then
                 IMAGE_TAG="latest";
               elif [[ -n $SITE_GIT_TAG_NAME ]]; then
-                IMAGE_TAG="${SITE_GIT_TAG_NAME}";
+                IMAGE_TAG="$SITE_GIT_TAG_NAME";
               elif [[ -n $SITE_BRANCH ]]; then
-                IMAGE_TAG="${SITE_BRANCH}";
+                IMAGE_TAG="$SITE_BRANCH";
               else
                 exit 1
               fi
             - cd $(shipctl get_resource_state site)
-            - IMAGE_NAME=$(shipctl get_resource_version_key docker_image "sourceName")
-            - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-            - docker login -u $(shipctl get_integration_resource_field docker_image "username") -p $(shipctl get_integration_resource_field docker_image "token")
-            - docker push $IMAGE_NAME:$IMAGE_TAG
+            - IMAGE_NAME=$(shipctl get_resource_version_key "$RES_OUT_IMG" "sourceName")
+            - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+            - docker login -u $(shipctl get_integration_resource_field "$RES_OUT_IMG" "username") -p $(shipctl get_integration_resource_field "$RES_OUT_IMG" "token")
+            - docker push "$IMAGE_NAME:$IMAGE_TAG"
       - OUT: docker_image
     on_success:
       script:
-        - shipctl put_resource_state_multi docker_image "versionName=${IMAGE_TAG}"
+        - shipctl put_resource_state_multi "$RES_OUT_IMG" "versionName=$IMAGE_TAG"
