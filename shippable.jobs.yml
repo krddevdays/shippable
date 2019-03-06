@@ -27,14 +27,6 @@ jobs:
               cd $(shipctl get_resource_state krddevdays)
               sudo docker build -t "$CONTAINER_NAME" . || exit 1
       - TASK:
-          name: "login"
-          runtime:
-            options:
-              env:
-                - secure: fxfQoqKgr7acKAMlQNpsDGl1KyLODlgqNO647g0yytyg8r8v/Af/JDacRxfUln+26vXP++c39PZcv9ifHPXoS4/xi3k+IJ2huXLct2Rov3dgERtY3UNu6mdXJaGQ4rj9DRZt41YuS8hOc5AsXfso8Xp6NS0z6Ziwp+MVCkHnqBn0T36jMzo/BXspE3jPbU+vMCTdAZXKpYVpAg5bozLG7UNEtmyH4Uu0sjrxX/XKYnOeYRuMmfyv3Lu6cComTZrniW+etrekG8ZSjjfg7mmMKxZrg3kMfJMaL/4ObkZlLwyrJ+AUI/H8dEdvwDqGyVFX2pi6GI6dJyyNM3Lkfq6PDw==
-          script:
-            - sudo docker login --username "$DOCKER_USERNAME" --password "$DOCKER_PASSWORD" || exit 1
-      - TASK:
           name: "push"
           script:
             - sudo docker push "$CONTAINER_NAME"
