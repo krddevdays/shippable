@@ -14,6 +14,7 @@ resources:
     integration: dockerHub
 
   - name: docker_image
+    type: image
     versionTemplate:
       sourceName: "krddevdays/krd.dev"
 
