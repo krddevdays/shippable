@@ -40,7 +40,7 @@ jobs:
             - docker build -t $IMAGE_NAME:$IMAGE_TAG .
             - docker login -u $DOCKER_HUB_INTEGRATION_USERNAME -p $DOCKER_HUB_INTEGRATION_TOKEN
             - docker push $IMAGE_NAME:$IMAGE_TAG
-        - OUT: docker_image
-      on_success:
-        script:
-          - shipctl put_resource_state_multi docker_image "versionName=${IMAGE_TAG}"
+      - OUT: docker_image
+    on_success:
+      script:
+        - shipctl put_resource_state_multi docker_image "versionName=${IMAGE_TAG}"
