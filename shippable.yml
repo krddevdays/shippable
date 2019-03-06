@@ -38,10 +38,12 @@ jobs:
               else
                 exit 1
               fi
-            - pushd $(shipctl get_resource_state site)
+            - DOCKER_USERNAME=$(shipctl get_integration_resource_field "$RES_OUT_IMG" "username")
+            - DOCKER_PASSWORD=$(shipctl get_integration_resource_field "$RES_OUT_IMG" "token")
             - IMAGE_NAME=$(shipctl get_resource_version_key "$RES_OUT_IMG" "sourceName")
+            - pushd $(shipctl get_resource_state site)
             - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
-            - docker login -u $(shipctl get_integration_resource_field "$RES_OUT_IMG" "username") -p $(shipctl get_integration_resource_field "$RES_OUT_IMG" "token")
+            - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
             - docker push "$IMAGE_NAME:$IMAGE_TAG"
       - OUT: docker_image
     on_success:
