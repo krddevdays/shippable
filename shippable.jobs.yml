@@ -7,7 +7,9 @@ jobs:
       container: false
     steps:
       - IN: krddevdays
+      - OUT: container_name
       - TASK:
+        - name: "generate container_name"
         - script: >
             DOCKER_IMAGE_NAME="krddevdays/krd.dev"
 
@@ -21,6 +23,12 @@ jobs:
               CONTAINER_NAME=$DOCKER_IMAGE_NAME:$(echo $KRDDEVDAYS_COMMIT | awk '{ string=substr($0, 0, 7); print string; }');
             fi
             
+            shipctl post_resource_state container_name CONTAINER_NAME "$CONTAINER_NAME"
+      - IN: krddevdays
+      - IN: container_name
+      - TASK:
+        - name: "build"
+        - script: >
             cd $(shipctl get_resource_state krddevdays)
 
-            sudo docker build -t "$CONTAINER_NAME" . || exit 1
+            sudo docker build -t "$(chipctl get_resource_state CONTAINER_NAME)" . || exit 1
