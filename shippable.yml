@@ -5,7 +5,7 @@ resources:
     versionTemplate:
       sourceName: krddevdays/krddevdays.ru
       buildOnCommit: true
-      buildOnPullRequest: false
+      buildOnPullRequest: true
       buildOnPullRequestClose: false
       buildOnRelease: false
       buildOnTagPush: false
@@ -22,6 +22,7 @@ jobs:
     type: runSh     
     steps:
       - IN: site
+      - showBuildStatus: true
       - TASK:
           runtime:
             options:
@@ -29,14 +30,10 @@ jobs:
                 - RES_OUT_IMG: "docker_image"
           script:
             - |
-              if [ "$SITE_BRANCH" == "master" ]; then
-                IMAGE_TAG="latest";
-              elif [[ -n $SITE_GIT_TAG_NAME ]]; then
-                IMAGE_TAG="$SITE_GIT_TAG_NAME";
-              elif [[ -n $SITE_BRANCH ]]; then
-                IMAGE_TAG="$SITE_BRANCH";
+              if [ $_IS_PULL_REQUEST ]; then
+                IMAGE_TAG=$(echo $SITE_COMMIT  | awk '{ string=substr($0, 0, 7); print string; }')
               else
-                exit 1
+                IMAGE_TAG="$SITE_BRANCH";
               fi
             - DOCKER_USERNAME=$(shipctl get_integration_resource_field "$RES_OUT_IMG" "username")
             - DOCKER_PASSWORD=$(shipctl get_integration_resource_field "$RES_OUT_IMG" "token")
