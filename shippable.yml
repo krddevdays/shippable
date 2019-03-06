@@ -9,12 +9,14 @@ resources:
       buildOnPullRequestClose: false
       buildOnRelease: false
       buildOnTagPush: false
-resources:
+
   - name: docker_hub
     integration: dockerHub
+
   - name: docker_image
     versionTemplate:
       sourceName: "krddevdays/krd.dev"
+
 jobs:
   - name: build_and_push
     type: runSh     
