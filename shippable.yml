@@ -15,6 +15,7 @@ resources:
     integration: docker_hub
     versionTemplate:
       sourceName: "krddevdays/krd.dev"
+      versionName: "latest"
 
 jobs:
   - name: build_and_push
