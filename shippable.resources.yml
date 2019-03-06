@@ -1,0 +1,11 @@
+resources:
+  - name: krddevdays
+    type: gitRepo
+    integration: GitHub
+    versionTemplate:
+      sourceName: krddevdays/krddevdays.ru
+      buildOnCommit: true
+      buildOnPullRequest: false
+      buildOnPullRequestClose: false
+      buildOnRelease: false
+      buildOnTagPush: false
