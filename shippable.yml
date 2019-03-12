@@ -30,7 +30,7 @@ jobs:
                 - RES_OUT_IMG: "docker_image"
           script:
             - |
-              if [ $FRONTEND_GIT_IS_PULL_REQUEST ]; then
+              if [ "$FRONTEND_GIT_IS_PULL_REQUEST" == true ]; then
                 IMAGE_TAG="pr_$FRONTEND_GIT_PULL_REQUEST";
               else
                 IMAGE_TAG="$FRONTEND_GIT_BRANCH";
