@@ -19,7 +19,7 @@ resources:
 
 jobs:
   - name: build_and_push
-    type: runSh     
+    type: runSh
     steps:
       - IN: frontend_git
         showBuildStatus: true
@@ -31,7 +31,7 @@ jobs:
           script:
             - |
               if [ $FRONTEND_GIT_IS_PULL_REQUEST ]; then
-                IMAGE_TAG=$(echo $FRONTEND_GIT_COMMIT  | awk '{ string=substr($0, 0, 7); print string; }')
+                IMAGE_TAG="pr_$FRONTEND_GIT_PULL_REQUEST";
               else
                 IMAGE_TAG="$FRONTEND_GIT_BRANCH";
               fi
