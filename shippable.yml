@@ -1,9 +1,9 @@
 resources:
-  - name: site
+  - name: frontend_git
     type: gitRepo
     integration: GitHub
     versionTemplate:
-      sourceName: krddevdays/krddevdays.ru
+      sourceName: krddevdays/frontend
       buildOnCommit: true
       buildOnPullRequest: true
       buildOnPullRequestClose: false
@@ -14,14 +14,14 @@ resources:
     type: image
     integration: docker_hub
     versionTemplate:
-      sourceName: krddevdays/krd.dev
+      sourceName: krddevdays/frontend
       versionName: "latest"
 
 jobs:
   - name: build_and_push
     type: runSh     
     steps:
-      - IN: site
+      - IN: frontend_git
         showBuildStatus: true
       - TASK:
           runtime:
@@ -30,15 +30,15 @@ jobs:
                 - RES_OUT_IMG: "docker_image"
           script:
             - |
-              if [ $_IS_PULL_REQUEST ]; then
-                IMAGE_TAG=$(echo $SITE_COMMIT  | awk '{ string=substr($0, 0, 7); print string; }')
+              if [ $FRONTEND_GIT_IS_PULL_REQUEST ]; then
+                IMAGE_TAG=$(echo $FRONTEND_GIT_COMMIT  | awk '{ string=substr($0, 0, 7); print string; }')
               else
-                IMAGE_TAG="$SITE_BRANCH";
+                IMAGE_TAG="$FRONTEND_GIT_BRANCH";
               fi
             - DOCKER_USERNAME=$(shipctl get_integration_resource_field "$RES_OUT_IMG" "username")
             - DOCKER_PASSWORD=$(shipctl get_integration_resource_field "$RES_OUT_IMG" "token")
             - IMAGE_NAME=$(shipctl get_resource_version_key "$RES_OUT_IMG" "sourceName")
-            - pushd $(shipctl get_resource_state site)
+            - pushd $(shipctl get_resource_state frontend_git)
             - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
             - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
             - docker push "$IMAGE_NAME:$IMAGE_TAG"
