@@ -1,0 +1,77 @@
+resources:
+  - name: frontend_masterRepo
+    type: gitRepo
+    integration: GitHub
+    versionTemplate:
+      sourceName: krddevdays/frontend
+      branch: master
+
+  - name: backend_masterRepo
+    type: gitRepo
+    integration: GitHub
+    versionTemplate:
+      sourceName: krddevdays/backend
+      branch: master
+
+  - name: infrastructure_masterRepo
+    type: gitRepo
+    integration: GitHub
+    versionTemplate:
+      sourceName: krddevdays/infrastructure
+      branch: master
+
+  - name: frontend_image
+    type: image
+    versionTemplate:
+      sourceName: krddevdays/frontend
+      isPull: false
+      versionName: latest
+
+  - name: backend_image
+    type: image
+    versionTemplate:
+      sourceName: krddevdays/backend
+      isPull: false
+      versionName: latest
+
+  - name: docker_registry_config
+    type: cliConfig
+    integration: docker_registry
+
+  - name: dnsimple_env
+    type: params
+    versionTemplate:
+      params:
+        secure: kUpKk544qHxnpw3opyWW1J6oIqamUSTtu/Khv6HN1zMEaZ3JjMeLNohb7GNQhCirqUN9nDstgWTlnKFQkVIvLOJIKhHNKLoYR3NLE5i+Dzix8PDnT2BbVqmo011czs1FvYQqBoABQM7L0Or2sElSKSq5EKkV70Ih797DLijkjYA/KRSG5ZegQdFBhJAgjlviDG2Sj8QfoV7bI/XGRCkomGMe9blhjZzDWKoSmHR/rR7EPvHWjg9Yba8J4HdKZUt3ZSHU4VDwIe1tBZkZ9B8YsiYsI6ywVEJl5xHscJaD3jpalRh1BrmXmD+5gOsMNSOzj7U48H8qxLES/Yk1jPilZA==
+
+  - name: s3_env
+    type: params
+    versionTemplate:
+      params:
+        secure: jwwWxI/6g6AyQwiQMne80XmQo3TxLTrikQR9lutYBW7EXSq5hb8A+hvc0aKFwvzHrnU4HtEjCWcjL7Hq9ww94AWz1jDQNDhTyJjmmyjtRCrS7GaZmT07CqK/cTlLGZswdFMjd+8blcwdpstbxDMfq3KktoIsBFLii13buRMso28K26RdAlPogcSPCYZhNj8cUJJ+y33SgDiinXsO0xX1hIToaUyMvG4E0VY+8vVgRiMWWMt3zUUSWA0hU7LFcMW98QjiS7G75i/jubQ1ZMpCtWlcWB7/+AfJiIJ06IeRVOO0odUf1MXL45F92HRa6lm7KHOecNpOWTRlzllt7n7xJg==
+
+  - name: yandex_env
+    type: params
+    versionTemplate:
+      params:
+        secure: UT1VjEL9M7N9bhhE6a3ixnFULkHaMEHahtX9entnEVfGzOK2SCZavv9S3ubhcSDCHS8HakXxdl3rzPFtWpZORDKxW4+IWtFkUdZzAkaIerXwnqLH+EVEVPCpyXE/37dQiUdWuLMrWpbe1bA2ntj8PA9VA93upiAZh0qoeFHhSdeP2YdyEyIO6Gfy8pMwaEnKecajccI3bR0EWLL71ZEV0+JA0Y/DyPsC6/eFV6UguKMsmGeTGlx0gZtqJqtU1zx1haAl52KLBr1nkjw+VFf6UPVBUgPm3BUh8OmplDbXTXK3MMocHcz73s+5Akr99Vv0/IEs29WwXe71vYVXdVroHA==
+
+  - name: backend_secret_key_env
+    type: params
+    versionTemplate:
+      params:
+        secure: efla23m7Y8LErxwjiAzI8RFQMZVJjeJ6ONfjGwt4Otg1ZPZNLuW37Pw9plaZewYY6nYsGaNfWdwJAhdLSiuV4zA+eNFjrp7j/U2IkMTdm/6/fCL0BzkEE+mKMz/zt8+N9cL30O1dHvOav1JQLi2lQL6ChLHMpEnlvaShWRiwSCAwRNYYEW6oxz/WEJzS0U3iJxovwHQMsYJ+AETdCBL36eRHiHzclhchaUn2b27ySKz4+Rnmn0L2iKWpcPB4k/UgXJXW9LZ5fAMRa4MpS684cRiNqy5/OAWup1udYGWPOBKvn62154Ag9/YkYHlPw9UWmkp99ZeUuH3WT5YUtO5X4A==
+
+  - name: db_env
+    type: params
+    versionTemplate:
+      params:
+        secure: nLwJUaZZvBs4EOtGP6X4fE7WjcINhXb754+0uwkfo0LgJJ35LHCRJqInK1MRdEegLVymUVaSJFYKWSr6VI0NfQJw1yxssNln39zGPcIbf9t+cToLzakDUPtuSRvWQ2HWMxInTxbtPumSlbQPRuwzgVnZwI2DDflfD9n0fdAjW7XAH4Q3JGEYi82+2PcGLVj7kAXrRiRS8TUJ3U9Bk+AR3VbB4PKT5LXRuqefZ2FnCgJXoYepQuOfiDMqNqJv8WPIznvAUlI8FEjDDpCS5dQSAJEWX1re8/kL3wTVjvA2Pojt9xGzEJV5mqyH45unliVAxe9Yt9WyHzX9VE/s/Y+hPw==
+
+  - name: docker_swarm_ssh
+    type: integration
+    integration: docker_swarm_ssh
+
+  - name: dhparams
+    type: integration
+    integration: dhparams

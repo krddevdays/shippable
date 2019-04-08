@@ -1,0 +1,82 @@
+jobs:
+  - name: backend_build_and_push
+    type: runSh
+    steps:
+      - IN: backend_masterRepo
+        showBuildStatus: true
+      - IN: docker_registry_config
+        switch: off
+      - OUT: backend_image
+      - TASK:
+          runtime:
+            container: false
+          script:
+            - IMAGE_TAG=$(echo $BACKEND_MASTERREPO_COMMIT | cut -c 1-5);
+            - IMAGE_NAME=$(shipctl get_resource_version_key "backend_image" "sourceName")
+            - pushd $(shipctl get_resource_state backend_masterRepo)
+            - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+            - docker push "$IMAGE_NAME:$IMAGE_TAG"
+            - shipctl post_resource_state "backend_image" "versionName" "$IMAGE_TAG"
+
+  - name: frontend_build_and_push
+    type: runSh
+    steps:
+      - IN: frontend_masterRepo
+        showBuildStatus: true
+      - IN: docker_registry_config
+        switch: off
+      - OUT: frontend_image
+      - TASK:
+          runtime:
+            container: false
+          script:
+            - IMAGE_TAG=$(echo $FRONTEND_MASTERREPO_COMMIT | cut -c 1-5);
+            - IMAGE_NAME=$(shipctl get_resource_version_key "frontend_image" "sourceName")
+            - pushd $(shipctl get_resource_state frontend_masterRepo)
+            - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+            - docker push "$IMAGE_NAME:$IMAGE_TAG"
+            - shipctl post_resource_state "frontend_image" "versionName" "$IMAGE_TAG"
+
+  - name: terraform
+    type: runSh
+    steps:
+      - IN: infrastructure_masterRepo
+      - IN: frontend_image
+      - IN: backend_image
+      - IN: dnsimple_env
+        switch: off
+      - IN: s3_env
+        switch: off
+      - IN: yandex_env
+        switch: off
+      - IN: db_env
+        switch: off
+      - IN: backend_secret_key_env
+        switch: off
+      - IN: docker_swarm_ssh
+        switch: off
+      - IN: dhparams
+        switch: off
+      - TASK:
+          script:
+            - pushd $(shipctl get_resource_state "infrastructure_masterRepo")/terraform
+            - terraform init
+            - |
+              terraform plan -out=terraform.plan \
+                -var "docker_swarm_ssh_key_public=$DOCKER_SWARM_SSH_PUBLIC_KEY_PATH" \
+                -var "docker_swarm_ssh_key_private=$DOCKER_SWARM_SSH_PRIVATE_KEY_PATH" \
+                -var "domain=krd.dev" \
+                -var "frontend_image_name=$(shipctl get_resource_version_key "frontend_image" "sourceName")" \
+                -var "frontend_image_version=$(shipctl get_resource_version_key "frontend_image" "versionName")" \
+                -var "backend_image_name=$(shipctl get_resource_version_key "backend_image" "sourceName")" \
+                -var "backend_image_version=$(shipctl get_resource_version_key "backend_image" "versionName")" \
+                -var "backend_secret_key=$BACKEND_SECRET_KEY" \
+                -var "backend_db_name=$DB_NAME" \
+                -var "backend_db_user=$DB_USER" \
+                -var "backend_db_password=$DB_PASSWORD" \
+                -var "db_host=$DB_HOST" \
+                -var "db_port=$DB_PORT" \
+                -var "certbot_email=help@krddevdays.ru" \
+                -var "dhparams=$DHPARAMS_KEYPATH"
+            - terraform apply -auto-approve terraform.plan
+            - popd
