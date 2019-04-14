@@ -1,41 +1,131 @@
 jobs:
+  - name: backend_runCI
+    type: runCI
+    steps:
+      - OUT: backend_gitRepo
+        replicate: backend_ciRepo
+        replicateOnPullRequest: true
+
+  - name: frontend_runCI
+    type: runCI
+    steps:
+      - OUT: frontend_gitRepo
+        replicate: frontend_ciRepo
+        replicateOnPullRequest: true
+
+  - name: backend_pr_close
+    type: runSh
+    steps:
+      - IN: backend_prClose
+      - IN: pull_requests_state
+      - TASK:
+          script:
+            - PULL_REQUESTS=$(shipctl get_resource_version_key pull_requests_state "backend") && echo $PULL_REQUESTS
+            - |
+              echo "Remove $BACKEND_PRCLOSE_PULL_REQUEST"
+              PULL_REQUESTS=$(jq -c -n "del(.\"$BACKEND_PRCLOSE_PULL_REQUEST\")" <<< $PULL_REQUESTS)
+              echo $PULL_REQUESTS
+            - shipctl put_resource_state pull_requests_state "backend" "$PULL_REQUESTS"
+            - shipctl put_resource_state pull_requests_params "BACKEND_PULL_REQUESTS" "$PULL_REQUESTS"
+      - OUT: pull_requests_state
+      - OUT: pull_requests_params
+
+  - name: frontend_pr_close
+    type: runSh
+    steps:
+      - IN: frontend_prClose
+      - IN: pull_requests_state
+      - TASK:
+          script:
+            - PULL_REQUESTS=$(shipctl get_resource_version_key pull_requests_state "frontend") && echo $PULL_REQUESTS
+            - |
+              echo "Remove $FRONTEND_PRCLOSE_PULL_REQUEST"
+              PULL_REQUESTS=$(jq -c -n "del(.\"$FRONTEND_PRCLOSE_PULL_REQUEST\")" <<< $PULL_REQUESTS)
+              echo $PULL_REQUESTS
+            - shipctl put_resource_state pull_requests_state "frontend" "$PULL_REQUESTS"
+            - shipctl put_resource_state pull_requests_params "FRONTEND_PULL_REQUESTS" "$PULL_REQUESTS"
+      - OUT: pull_requests_state
+      - OUT: pull_requests_params
+
   - name: backend_build_and_push
     type: runSh
     steps:
-      - IN: backend_masterRepo
+      - IN: backend_gitRepo
         showBuildStatus: true
       - IN: docker_registry_config
         switch: off
-      - OUT: backend_image
+      - IN: pull_requests_state
       - TASK:
-          runtime:
-            container: false
           script:
-            - IMAGE_TAG=$(echo $BACKEND_MASTERREPO_COMMIT | cut -c 1-5);
-            - IMAGE_NAME=$(shipctl get_resource_version_key "backend_image" "sourceName")
-            - pushd $(shipctl get_resource_state backend_masterRepo)
+            - IMAGE_TAG=$(echo $BACKEND_GITREPO_COMMIT | cut -c 1-5) && echo $IMAGE_TAG
+            - IMAGE_NAME=$(shipctl get_resource_version_key "backend_image" "sourceName") && echo $IMAGE_NAME
+            - pushd $(shipctl get_resource_state backend_gitRepo)
             - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
             - docker push "$IMAGE_NAME:$IMAGE_TAG"
-            - shipctl post_resource_state "backend_image" "versionName" "$IMAGE_TAG"
+            - |
+              if [ "$BACKEND_GITREPO_IS_PULL_REQUEST" == false ] && [ "$BACKEND_GITREPO_BRANCH" == "master" ]; then
+                echo "Update backend_image"
+                shipctl post_resource_state "backend_image" "versionName" "$IMAGE_TAG"
+                exit 0
+              else
+                echo "Dont't update backend_image"
+                echo "$BACKEND_GITREPO_IS_PULL_REQUEST != false || $BACKEND_GITREPO_BRANCH != master"
+              fi;
+            - PULL_REQUESTS=$(shipctl get_resource_version_key pull_requests_state "backend") && echo $PULL_REQUESTS
+            - |
+              if [ "$BACKEND_GITREPO_IS_PULL_REQUEST" == true ]; then
+                echo "Update pull_requests_state"
+                PULL_REQUESTS=$(jq -c -n ".\"$BACKEND_GITREPO_PULL_REQUEST\"=\"$IMAGE_TAG\"" <<< $PULL_REQUESTS)
+                echo $PULL_REQUESTS
+                shipctl put_resource_state pull_requests_state "backend" "$PULL_REQUESTS"
+                shipctl put_resource_state pull_requests_params "BACKEND_PULL_REQUESTS" "$PULL_REQUESTS"
+              else
+                echo "Don't update pull_requests_state"
+                echo "$BACKEND_GITREPO_IS_PULL_REQUEST != true"
+              fi;
+      - OUT: backend_image
+      - OUT: pull_requests_state
+      - OUT: pull_requests_params
 
   - name: frontend_build_and_push
     type: runSh
     steps:
-      - IN: frontend_masterRepo
+      - IN: frontend_gitRepo
         showBuildStatus: true
       - IN: docker_registry_config
         switch: off
-      - OUT: frontend_image
+      - IN: pull_requests_state
       - TASK:
-          runtime:
-            container: false
           script:
-            - IMAGE_TAG=$(echo $FRONTEND_MASTERREPO_COMMIT | cut -c 1-5);
-            - IMAGE_NAME=$(shipctl get_resource_version_key "frontend_image" "sourceName")
-            - pushd $(shipctl get_resource_state frontend_masterRepo)
+            - IMAGE_TAG=$(echo $FRONTEND_GITREPO_COMMIT | cut -c 1-5) && echo $IMAGE_TAG
+            - IMAGE_NAME=$(shipctl get_resource_version_key "frontend_image" "sourceName") && echo $IMAGE_NAME
+            - pushd $(shipctl get_resource_state frontend_gitRepo)
             - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
             - docker push "$IMAGE_NAME:$IMAGE_TAG"
-            - shipctl post_resource_state "frontend_image" "versionName" "$IMAGE_TAG"
+            - |
+              if [ "$FRONTEND_GITREPO_IS_PULL_REQUEST" == false ] && [ "$FRONTEND_GITREPO_BRANCH" == "master" ]; then
+                echo "Update frontend_image"
+                shipctl post_resource_state "frontend_image" "versionName" "$IMAGE_TAG"
+                exit 0
+              else
+                echo "Dont't update frontend_image"
+                echo "$FRONTEND_GITREPO_IS_PULL_REQUEST != false || $FRONTEND_GITREPO_BRANCH != master"
+              fi;
+            - PULL_REQUESTS=$(shipctl get_resource_version_key pull_requests_state "frontend") && echo $PULL_REQUESTS
+            - |
+              if [ "$FRONTEND_GITREPO_IS_PULL_REQUEST" == true ]; then
+                echo "Update pull_requests_state"
+                PULL_REQUESTS=$(jq -c -n ".\"$FRONTEND_GITREPO_PULL_REQUEST\"=\"$IMAGE_TAG\"" <<< $PULL_REQUESTS)
+                echo $PULL_REQUESTS
+                shipctl put_resource_state pull_requests_state "frontend" "$PULL_REQUESTS"
+                shipctl put_resource_state pull_requests_params "FRONTEND_PULL_REQUESTS" "$PULL_REQUESTS"
+              else
+                echo "Don't update pull_requests_state"
+                echo "$FRONTEND_GITREPO_IS_PULL_REQUEST != true"
+              fi;
+      - OUT: frontend_image
+      - OUT: pull_requests_state
+      - OUT: pull_requests_params
 
   - name: terraform
     type: runSh
@@ -77,6 +167,6 @@ jobs:
                 -var "db_host=$DB_HOST" \
                 -var "db_port=$DB_PORT" \
                 -var "certbot_email=help@krddevdays.ru" \
-                -var "dhparams=$DHPARAMS_KEYPATH"
+                -var "dhparams=$DHPARAMS_KEYPATH" \
             - terraform apply -auto-approve terraform.plan
             - popd

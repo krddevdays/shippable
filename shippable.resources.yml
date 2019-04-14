@@ -1,17 +1,46 @@
 resources:
-  - name: frontend_masterRepo
+  - name: pull_requests_state
+    type: state
+    versionTemplate:
+      backend: "{}"
+      frontend: "{}"
+
+  - name: pull_requests_params
+    type: params
+    versionTemplate:
+      params:
+        BACKEND_PULL_REQUESTS: "{}"
+        FRONTEND_PULL_REQUESTS: "{}"
+
+  - name: frontend_gitRepo
     type: gitRepo
     integration: GitHub
     versionTemplate:
       sourceName: krddevdays/frontend
-      branch: master
+      buildOnCommit: false
 
-  - name: backend_masterRepo
+  - name: backend_gitRepo
     type: gitRepo
     integration: GitHub
     versionTemplate:
       sourceName: krddevdays/backend
-      branch: master
+      buildOnCommit: false
+
+  - name: backend_prClose
+    type: gitRepo
+    integration: GitHub
+    versionTemplate:
+      sourceName: krddevdays/backend
+      buildOnCommit: false
+      buildOnPullRequestClose: true
+
+  - name: frontend_prClose
+    type: gitRepo
+    integration: GitHub
+    versionTemplate:
+      sourceName: krddevdays/frontend
+      buildOnCommit: false
+      buildOnPullRequestClose: true
 
   - name: infrastructure_masterRepo
     type: gitRepo
