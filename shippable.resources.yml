@@ -95,7 +95,7 @@ resources:
     type: params
     versionTemplate:
       params:
-        secure: nLwJUaZZvBs4EOtGP6X4fE7WjcINhXb754+0uwkfo0LgJJ35LHCRJqInK1MRdEegLVymUVaSJFYKWSr6VI0NfQJw1yxssNln39zGPcIbf9t+cToLzakDUPtuSRvWQ2HWMxInTxbtPumSlbQPRuwzgVnZwI2DDflfD9n0fdAjW7XAH4Q3JGEYi82+2PcGLVj7kAXrRiRS8TUJ3U9Bk+AR3VbB4PKT5LXRuqefZ2FnCgJXoYepQuOfiDMqNqJv8WPIznvAUlI8FEjDDpCS5dQSAJEWX1re8/kL3wTVjvA2Pojt9xGzEJV5mqyH45unliVAxe9Yt9WyHzX9VE/s/Y+hPw==
+        secure: NL2qFNTI0un6QflDIb6vlSEP1/J3Bv8xnKpg9OxvWJxd8Q5vVDIOd11DmyB/76a/cV0QqtWsF1ob5ZCZfVMdQCrTY8Si/vgXLi9eJrU+oXQfRfm5DLbpwz/bLRi0HiKd2D1D3uSp8m/koXxdIUGCdqMgP09q2c46ZpVsG9iqqQZBCOzh2eDtcq71LR2z4z6ZWK/vx7Opd1O6LnVmUhcDgTMPveKGwQraFwsZSdrleO3TIi2E7kilCms14Pj3aFNHERvrAVZ6y7VCkhYpIVutZOTkxDvMFGiNPkCMT3+h5TYUgniQXv/EvI0Db3NjWEaaZMTHUbWRn+ZhmI2dTO2O+A==
 
   - name: docker_swarm_ssh
     type: integration
