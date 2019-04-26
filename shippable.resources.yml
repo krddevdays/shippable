@@ -104,3 +104,9 @@ resources:
   - name: dhparams
     type: integration
     integration: dhparams
+
+  - name: qtickets_stage_env
+    type: params
+    versionTemplate:
+      params:
+        secure: BNAgKIxhmhBYabDVsUa81J8qqPhpcvh2pSzSG8Aal0p1chqgjc2K3YjaLdjrGQ0lvR2tfCx30ViEgCuqb47ruNX/syl8tOkP8FZ2ptiZyPEW3tIm8gH1XjIl97mEe2dP480bMETVqfsxHTd07Pp57bjATtzm1TE9ZEw4gPl3ivBtqugMOfryoc7NKDGZMbOiH6Aziz9tKukHj5XmsA5b446/9YS72ZzqTgprB11JpR49AxCAiyn8uQsyNIS07kVzvLtg3o+auNHMDtVeKuWYHuKTEXsBMVEwbrnkPgwHxfJjFFRDV1V69VyVNH+SPe8Mo1/iy521w7EUQu9FvyzV/w==

@@ -147,6 +147,8 @@ jobs:
         switch: off
       - IN: dhparams
         switch: off
+      - IN: qtickets_stage_env
+        switch: off
       - TASK:
           script:
             - pushd $(shipctl get_resource_state "infrastructure_masterRepo")/terraform
@@ -168,5 +170,7 @@ jobs:
                 -var "db_port=$DB_PORT" \
                 -var "certbot_email=help@krddevdays.ru" \
                 -var "dhparams=$DHPARAMS_KEYPATH" \
+                -var "qtickets_endpoint=$QTICKETS_STAGE_ENDPOINT" \
+                -var "qtickets_token=$QTICKETS_STAGE_TOKEN" \
             - terraform apply -auto-approve terraform.plan
             - popd
