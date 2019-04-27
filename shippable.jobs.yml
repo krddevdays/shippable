@@ -96,6 +96,8 @@ jobs:
         switch: off
       - IN: pull_requests_state
       - TASK:
+          runtime:
+            container: false
           script:
             - IMAGE_TAG=$(echo $FRONTEND_GITREPO_COMMIT | cut -c 1-5) && echo $IMAGE_TAG
             - IMAGE_NAME=$(shipctl get_resource_version_key "frontend_image" "sourceName") && echo $IMAGE_NAME
