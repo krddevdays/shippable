@@ -110,3 +110,9 @@ resources:
     versionTemplate:
       params:
         secure: BNAgKIxhmhBYabDVsUa81J8qqPhpcvh2pSzSG8Aal0p1chqgjc2K3YjaLdjrGQ0lvR2tfCx30ViEgCuqb47ruNX/syl8tOkP8FZ2ptiZyPEW3tIm8gH1XjIl97mEe2dP480bMETVqfsxHTd07Pp57bjATtzm1TE9ZEw4gPl3ivBtqugMOfryoc7NKDGZMbOiH6Aziz9tKukHj5XmsA5b446/9YS72ZzqTgprB11JpR49AxCAiyn8uQsyNIS07kVzvLtg3o+auNHMDtVeKuWYHuKTEXsBMVEwbrnkPgwHxfJjFFRDV1V69VyVNH+SPe8Mo1/iy521w7EUQu9FvyzV/w==
+
+  - name: qtickets_env
+    type: params
+    versionTemplate:
+      params:
+        secure: iBszOfNM4vUwWhr3JvGicX5jDt2ue+FXRX8LF76UCaVhAAns/x3b49jOQLC5NFp9HMVJTtb5e+BFPQjHi/YKW6JAoZnSEJkyV9Zg1055sLYPiQBIhLz5unS5Qkduqor8z2qUXBr/ZAp33j/g32Hs1ysAUjJKdmQkpB4RgHCauyog2ZeDPBS73fhSutxd/qV4A/mTY5u3x97D06iHCWjMQkOY9j50+Bv7oBjvjL4iM84MUelwgRru7TkeIBe71IGBFSgzECXPfQhxLbRQNi0/OTc4eWz3v3E6KTrv9xLOSsxVDPFHUcNC9fblR/Ezf9aD/y4FMFkwBua7iiRu+PSWLg==

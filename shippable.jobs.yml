@@ -149,7 +149,7 @@ jobs:
         switch: off
       - IN: dhparams
         switch: off
-      - IN: qtickets_stage_env
+      - IN: qtickets_env
         switch: off
       - TASK:
           script:
@@ -172,7 +172,7 @@ jobs:
                 -var "db_port=$DB_PORT" \
                 -var "certbot_email=help@krddevdays.ru" \
                 -var "dhparams=$DHPARAMS_KEYPATH" \
-                -var "qtickets_endpoint=$QTICKETS_STAGE_ENDPOINT" \
-                -var "qtickets_token=$QTICKETS_STAGE_TOKEN" \
+                -var "qtickets_endpoint=$QTICKETS_ENDPOINT" \
+                -var "qtickets_token=$QTICKETS_TOKEN" \
             - terraform apply -auto-approve terraform.plan
             - popd
