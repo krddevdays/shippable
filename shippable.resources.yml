@@ -4,14 +4,12 @@ resources:
     integration: GitHub
     versionTemplate:
       sourceName: krddevdays/frontend
-      buildOnCommit: false
 
   - name: backend_gitRepo
     type: gitRepo
     integration: GitHub
     versionTemplate:
       sourceName: krddevdays/backend
-      buildOnCommit: false
 
   - name: infrastructure_masterRepo
     type: gitRepo
