@@ -116,3 +116,9 @@ resources:
     versionTemplate:
       params:
         secure: iBszOfNM4vUwWhr3JvGicX5jDt2ue+FXRX8LF76UCaVhAAns/x3b49jOQLC5NFp9HMVJTtb5e+BFPQjHi/YKW6JAoZnSEJkyV9Zg1055sLYPiQBIhLz5unS5Qkduqor8z2qUXBr/ZAp33j/g32Hs1ysAUjJKdmQkpB4RgHCauyog2ZeDPBS73fhSutxd/qV4A/mTY5u3x97D06iHCWjMQkOY9j50+Bv7oBjvjL4iM84MUelwgRru7TkeIBe71IGBFSgzECXPfQhxLbRQNi0/OTc4eWz3v3E6KTrv9xLOSsxVDPFHUcNC9fblR/Ezf9aD/y4FMFkwBua7iiRu+PSWLg==
+
+  - name: backend_sentry_env
+    type: params
+    versionTemplate:
+      params:
+        secure: daCvtA9M7QNWGjtFPweKquD1CnxltiyBsFBvbgB/1WSupDaHHWub7gUpc1/AAF0+xd1kpkXlS4UQ9yx2hZ5fhWaP7UsBF+t9RX5MTjsOZ1mleHsWVcmXbJVT5TrWgC3S5j7EVseho3+w4tcUdxj+6euUEkduua+Ix8MuE3l8EBxNaiZXQ0btIlrMLf+T5bm06WDH52VJ9DPi/32bxEA3jVeOW48zkNxDWnA38g49t2VW5ZzpqSJXwpEXMNZWFsX+WdQ1xKg22fNQHD0LXM59npHKMpWmhonCI4P6/HHCZgQ9JxcPwVZXhGEtubDYV/mZjgIBFa+4NJzBnDB6TE4dJA==
