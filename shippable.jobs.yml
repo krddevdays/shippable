@@ -75,6 +75,7 @@ jobs:
         switch: off
       - IN: backend_sentry_env
         switch: off
+      - IN: frontend_sentry_env
       - TASK:
           script:
             - pushd $(shipctl get_resource_state "infrastructure_masterRepo")/terraform
@@ -93,6 +94,8 @@ jobs:
                 -var "backend_db_user=$DB_USER" \
                 -var "backend_db_password=$DB_PASSWORD" \
                 -var "backend_sentry_dsn=$BACKEND_SENTRY_DSN" \
+                -var "frontend_sentry_dsn=$FRONTEND_SENTRY_DSN" \
+                -var "frontend_sentry_token=$FRONTEND_SENTRY_TOKEN" \
                 -var "db_host=$DB_HOST" \
                 -var "db_port=$DB_PORT" \
                 -var "certbot_email=help@krddevdays.ru" \
