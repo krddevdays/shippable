@@ -102,5 +102,6 @@ jobs:
                 -var "dhparams=$DHPARAMS_KEYPATH" \
                 -var "qtickets_endpoint=$QTICKETS_ENDPOINT" \
                 -var "qtickets_token=$QTICKETS_TOKEN" \
+                -var "qtickets_secret=$QTICKETS_SECRET" \
             - terraform apply -auto-approve terraform.plan
             - popd
