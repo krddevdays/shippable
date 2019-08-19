@@ -85,10 +85,10 @@ jobs:
                 -var "docker_swarm_ssh_key_public=$DOCKER_SWARM_SSH_PUBLIC_KEY_PATH" \
                 -var "docker_swarm_ssh_key_private=$DOCKER_SWARM_SSH_PRIVATE_KEY_PATH" \
                 -var "domain=krd.dev" \
-                -var "frontend_image_name=$(shipctl get_resource_version_key "frontend_image" "sourceName")" \
-                -var "frontend_image_version=$(shipctl get_resource_version_key "frontend_image" "versionName")" \
-                -var "backend_image_name=$(shipctl get_resource_version_key "backend_image" "sourceName")" \
-                -var "backend_image_version=$(shipctl get_resource_version_key "backend_image" "versionName")" \
+                -var "frontend_image_name=$FRONTEND_IMAGE_SOURCENAME" \
+                -var "frontend_image_version=$FRONTEND_IMAGE_VERSIONNAME" \
+                -var "backend_image_name=$BACKEND_IMAGE_SOURCENAME" \
+                -var "backend_image_version=$BACKEND_IMAGE_VERSIONNAME" \
                 -var "backend_secret_key=$BACKEND_SECRET_KEY" \
                 -var "backend_db_name=$DB_NAME" \
                 -var "backend_db_user=$DB_USER" \
