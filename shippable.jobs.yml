@@ -78,7 +78,7 @@ jobs:
       - IN: frontend_sentry_env
       - TASK:
           script:
-            - pushd $(shipctl get_resource_state "infrastructure_masterRepo")/terraform
+            - pushd $INFRASTRUCTURE_MASTERREPO_STATE/terraform
             - terraform init
             - |
               terraform plan -out=terraform.plan \
