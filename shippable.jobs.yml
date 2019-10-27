@@ -58,23 +58,19 @@ jobs:
       - IN: frontend_image
       - IN: backend_image
       - IN: dnsimple_env
-        switch: off
       - IN: s3_env
         switch: off
       - IN: yandex_env
         switch: off
       - IN: db_env
-        switch: off
       - IN: backend_secret_key_env
-        switch: off
       - IN: docker_swarm_ssh
         switch: off
       - IN: dhparams
-        switch: off
+      - IN: krddev_crt
+      - IN: krddev_key
       - IN: qtickets_env
-        switch: off
       - IN: backend_sentry_env
-        switch: off
       - IN: frontend_sentry_env
       - TASK:
           script:
@@ -100,6 +96,11 @@ jobs:
               export TF_VAR_db_port=$DB_PORT
               export TF_VAR_certbot_email=help@krddevdays.ru
               export TF_VAR_dhparams=$DHPARAMS_KEYPATH
+              export TF_VAR_dhparams_version=$DHPARAMS_VERSIONNUMBER
+              export TF_VAR_krddev_key=$KRDDEV_KEY_KEYPATH
+              export TF_VAR_krddev_key_version=$KRDDEV_KEY_VERSIONNUMBER
+              export TF_VAR_krddev_crt=$KRDDEV_CRT_KEYPATH
+              export TF_VAR_krddev_crt_version=$KRDDEV_CRT_VERSIONNUMBER
               export TF_VAR_qtickets_endpoint=$QTICKETS_ENDPOINT
               export TF_VAR_qtickets_token=$QTICKETS_TOKEN
               export TF_VAR_qtickets_secret=$QTICKETS_SECRET

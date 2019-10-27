@@ -74,6 +74,14 @@ resources:
     type: integration
     integration: dhparams
 
+  - name: krddev_crt
+    type: integration
+    integration: krddev_crt
+
+  - name: krddev_key
+    type: integration
+    integration: krddev_key
+
   - name: qtickets_stage_env
     type: params
     versionTemplate:
