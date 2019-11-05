@@ -11,6 +11,12 @@ resources:
     versionTemplate:
       sourceName: krddevdays/backend
 
+  - name: imageboard_gitRepo
+    type: gitRepo
+    integration: GitHub
+    versionTemplate:
+      sourceName: krddevdays/imageboard
+
   - name: infrastructure_masterRepo
     type: gitRepo
     integration: GitHub
@@ -29,6 +35,13 @@ resources:
     type: image
     versionTemplate:
       sourceName: krddevdays/backend
+      isPull: false
+      versionName: latest
+
+  - name: imageboard_image
+    type: image
+    versionTemplate:
+      sourceName: krddevdays/imageboard
       isPull: false
       versionName: latest
 
@@ -60,11 +73,23 @@ resources:
       params:
         secure: efla23m7Y8LErxwjiAzI8RFQMZVJjeJ6ONfjGwt4Otg1ZPZNLuW37Pw9plaZewYY6nYsGaNfWdwJAhdLSiuV4zA+eNFjrp7j/U2IkMTdm/6/fCL0BzkEE+mKMz/zt8+N9cL30O1dHvOav1JQLi2lQL6ChLHMpEnlvaShWRiwSCAwRNYYEW6oxz/WEJzS0U3iJxovwHQMsYJ+AETdCBL36eRHiHzclhchaUn2b27ySKz4+Rnmn0L2iKWpcPB4k/UgXJXW9LZ5fAMRa4MpS684cRiNqy5/OAWup1udYGWPOBKvn62154Ag9/YkYHlPw9UWmkp99ZeUuH3WT5YUtO5X4A==
 
-  - name: db_env
+  - name: backend_db_env
     type: params
     versionTemplate:
       params:
-        secure: NL2qFNTI0un6QflDIb6vlSEP1/J3Bv8xnKpg9OxvWJxd8Q5vVDIOd11DmyB/76a/cV0QqtWsF1ob5ZCZfVMdQCrTY8Si/vgXLi9eJrU+oXQfRfm5DLbpwz/bLRi0HiKd2D1D3uSp8m/koXxdIUGCdqMgP09q2c46ZpVsG9iqqQZBCOzh2eDtcq71LR2z4z6ZWK/vx7Opd1O6LnVmUhcDgTMPveKGwQraFwsZSdrleO3TIi2E7kilCms14Pj3aFNHERvrAVZ6y7VCkhYpIVutZOTkxDvMFGiNPkCMT3+h5TYUgniQXv/EvI0Db3NjWEaaZMTHUbWRn+ZhmI2dTO2O+A==
+        secure: MCwGZ2GvYed1lm7fQA3XTB5ZL9SkfyjmjXnpnhZGzAebj92OmzxAPPv1U+voW+t+qoGuXilUOcRW+ay9+MRu3OU4jVB6Pj0l2KnVRGdFYs3V2q3CTEdO4A4h4EBXgryAFziLLmk4JTbNEXZM5l6NwWAf9LCZhgXCqaRk1uAoEAl/46rS5wNVNvvmO26PTas2cULrpZ+x8qAE5DJMJYpF0dUyeCI8hpZwpqgHI8twH+W4cYAGqwehImgHnIlLTJXiJq1B6WHyRhQ8dU/+rqRYjERadA8d7b5VIyp++kR0V5fGAxWyt+W+kodmg5qHqiEmE7vVwX9P61tzQMsHeojF3Q==
+
+  - name: imageboard_secret_key_env
+    type: params
+    versionTemplate:
+      params:
+        secure: K+WKyhb6L5tA0/B4Ko1EGVZU7VEDFI5wZMKMxoui6vPoo50B/Uh1cXoGHvx8iBtOtkcfj7FD5hTYnSIz2cMNRqhUqW+GNxgNdmMAql3NgdqvuGOeFv+hqDHdC6XpaB4lmgj8QIhVdSWBmGcoNkQM0fQ3p7JExwFtUPFIpfPOzQQlkrRd3HeO7Yha/K5FA2S00fS8nspASY9H4xdUPatyDtXvSvBtRmycxKwbb7Zidi/EshJJFAhlMhILt1lQqqWntkrDrhEivzkFDpPOAIKA1yD4XsSQp9/C88S6PUnEYPyeWFbQUkh+mh7Q95HZhT3MPTb3mwIl9Y4JiE4rNnKSpw==
+
+  - name: imageboard_db_env
+    type: params
+    versionTemplate:
+      params:
+        secure: BgOx6MXBzeVv2NfTNe6kiQUbXtnNJ4ka9go9GYfFs9vpZWab7ul4ey5UDOayMNpfpqmmmEK+KxIoGlpwSyMutxR69646BZB/JXXVQjFNlA3yYbXo+d7KKMl5UTjgdiC0M174b2/WVoxDWpzZlnce2UroUFmfr+NwJYV4T0rMx3fBXNaR5OMgzzPBVHtA1J0CUke3I6sAqOq88DvDNBwJgAdBKr0ErZYI9feV+aqrC+OKStBsxAFtWu/1uWMxP+FcQsWwi3Ex/ikRmJpIOe0IeQX8592mRClGdHNYQFTvmuwKgmq6QgFAgR8Eh/w8vgSn+MMC5rlmHAaa5yPikr1+kg==
 
   - name: docker_swarm_ssh
     type: integration

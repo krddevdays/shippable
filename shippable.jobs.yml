@@ -1,4 +1,29 @@
 jobs:
+  - name: imageboard_build_and_push
+    type: runSh
+    steps:
+      - IN: imageboard_gitRepo
+        showBuildStatus: true
+      - IN: docker_registry_config
+        switch: off
+      - TASK:
+          script:
+            - IMAGE_TAG=$(echo $IMAGEBOARD_GITREPO_COMMIT | cut -c 1-5) && echo $IMAGE_TAG
+            - IMAGE_NAME=$(shipctl get_resource_version_key "imageboard_image" "sourceName") && echo $IMAGE_NAME
+            - pushd $(shipctl get_resource_state imageboard_gitRepo)
+            - docker build -t "$IMAGE_NAME:$IMAGE_TAG" .
+            - docker push "$IMAGE_NAME:$IMAGE_TAG"
+            - |
+              if [ "$IMAGEBOARD_GITREPO_IS_PULL_REQUEST" == false ] && [ "$IMAGEBOARD_GITREPO_BRANCH" == "master" ]; then
+                echo "Update imageboard_image"
+                shipctl post_resource_state "imageboard_image" "versionName" "$IMAGE_TAG"
+                exit 0
+              else
+                echo "Dont't update imageboard_image"
+                echo "$IMAGEBOARD_GITREPO_IS_PULL_REQUEST != false || $IMAGEBOARD_GITREPO_BRANCH != master"
+              fi;
+      - OUT: imageboard_image
+
   - name: backend_build_and_push
     type: runSh
     steps:
@@ -57,13 +82,16 @@ jobs:
       - IN: infrastructure_masterRepo
       - IN: frontend_image
       - IN: backend_image
+      - IN: imageboard_image
       - IN: dnsimple_env
       - IN: s3_env
         switch: off
       - IN: yandex_env
         switch: off
-      - IN: db_env
+      - IN: backend_db_env
+      - IN: imageboard_db_env
       - IN: backend_secret_key_env
+      - IN: imageboard_secret_key_env
       - IN: docker_swarm_ssh
         switch: off
       - IN: dhparams
@@ -80,27 +108,43 @@ jobs:
               export TF_INPUT=0
               export TF_VAR_docker_swarm_ssh_key_public=$DOCKER_SWARM_SSH_PUBLIC_KEY_PATH
               export TF_VAR_docker_swarm_ssh_key_private=$DOCKER_SWARM_SSH_PRIVATE_KEY_PATH
+
               export TF_VAR_domain=krd.dev
-              export TF_VAR_frontend_image_name=$FRONTEND_IMAGE_SOURCENAME
-              export TF_VAR_frontend_image_version=$FRONTEND_IMAGE_VERSIONNAME
+
               export TF_VAR_backend_image_name=$BACKEND_IMAGE_SOURCENAME
               export TF_VAR_backend_image_version=$BACKEND_IMAGE_VERSIONNAME
               export TF_VAR_backend_secret_key=$BACKEND_SECRET_KEY
-              export TF_VAR_backend_db_name=$DB_NAME
-              export TF_VAR_backend_db_user=$DB_USER
-              export TF_VAR_backend_db_password=$DB_PASSWORD
+              export TF_VAR_backend_db_name=$BACKEND_DB_NAME
+              export TF_VAR_backend_db_user=$BACKEND_DB_USER
+              export TF_VAR_backend_db_password=$BACKEND_DB_PASSWORD
+              export TF_VAR_backend_db_host=$BACKEND_DB_HOST
+              export TF_VAR_backend_db_port=$BACKEND_DB_PORT
               export TF_VAR_backend_sentry_dsn=$BACKEND_SENTRY_DSN
+
+              export TF_VAR_frontend_image_name=$FRONTEND_IMAGE_SOURCENAME
+              export TF_VAR_frontend_image_version=$FRONTEND_IMAGE_VERSIONNAME
               export TF_VAR_frontend_sentry_dsn=$FRONTEND_SENTRY_DSN
               export TF_VAR_frontend_sentry_token=$FRONTEND_SENTRY_TOKEN
-              export TF_VAR_db_host=$DB_HOST
-              export TF_VAR_db_port=$DB_PORT
+
+              export TF_VAR_imageboard_image_name=$IMAGEBOARD_IMAGE_SOURCENAME
+              export TF_VAR_imageboard_image_version=$IMAGEBOARD_IMAGE_VERSIONNAME
+              export TF_VAR_imageboard_secret_key=$IMAGEBOARD_SECRET_KEY
+              export TF_VAR_imageboard_db_name=$IMAGEBOARD_DB_NAME
+              export TF_VAR_imageboard_db_user=$IMAGEBOARD_DB_USER
+              export TF_VAR_imageboard_db_password=$IMAGEBOARD_DB_PASSWORD
+              export TF_VAR_imageboard_db_host=$IMAGEBOARD_DB_HOST
+              export TF_VAR_imageboard_db_port=$IMAGEBOARD_DB_PORT
+
               export TF_VAR_certbot_email=help@krddevdays.ru
+
               export TF_VAR_dhparams=$DHPARAMS_KEYPATH
               export TF_VAR_dhparams_version=$DHPARAMS_VERSIONNUMBER
+
               export TF_VAR_krddev_key=$KRDDEV_KEY_KEYPATH
               export TF_VAR_krddev_key_version=$KRDDEV_KEY_VERSIONNUMBER
               export TF_VAR_krddev_crt=$KRDDEV_CRT_KEYPATH
               export TF_VAR_krddev_crt_version=$KRDDEV_CRT_VERSIONNUMBER
+
               export TF_VAR_qtickets_endpoint=$QTICKETS_ENDPOINT
               export TF_VAR_qtickets_token=$QTICKETS_TOKEN
               export TF_VAR_qtickets_secret=$QTICKETS_SECRET
