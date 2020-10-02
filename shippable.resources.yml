@@ -59,13 +59,13 @@ resources:
     type: params
     versionTemplate:
       params:
-        secure: NyrDLpPnb9limbDo/O+vAvO5PP1iP/eWjHkBfak9dskD69Ia5ujXEFaUjVQ6cPmhPYMKKVomXzxZdI03lUvAUz6Cd1ueBJ9SHF9BdE9o8s360NsIGKYqcuZR5GFWf8waRTfbCvoFj76M+JkfFHMW4f3b7LW/LIE/zyNHwDymaz1Ib04xzL/GAl/NSSBGiR7mnyUpX+2Ogf2tfgx2u80dzFaRja+Em01wLvoGdcT4X4IYIIKqdH+nK/b99VSdW9kdE4VFoZuFwbuZoFlvgzZqfTFDnOYONeD+n9JEERzGX/yej7Fhe50AqDBkxfQOyHFK1AYqiMkzRO5sMw/MZneA3g==
+        secure: Pr3KWE/kFYIJfskOczLBNfmShe+kVTYwp41tnaWWI/sfhT0AnMz56QZFGPotWQE1Tyf7za8eCZRBZQTJoEfCbfj3xVXYnOZKUhugZAXCpx53JQaKlzpBXPuXqBo+mFUHcUhiN5CL+kVEvzMzsc6FIiK5BfxG7ZeD8dCjjSbL018PB9/MBxo9qN1dQb9jEzdY2NohrFxjWr+IqVxNaYo03P1L7ozM39tU/xkPgxtPGbXsTIb6fHeEHFSvjc1y1SXv2Myh9K6LGv4uzn256O2cwH5gQyGLepETBUcSI2v5zPClo+MAaTxYPF9LNZQiB/0X5+lLNm/CneQIvNVlfTxZTg==
 
   - name: yandex_env
     type: params
     versionTemplate:
       params:
-        secure: UT1VjEL9M7N9bhhE6a3ixnFULkHaMEHahtX9entnEVfGzOK2SCZavv9S3ubhcSDCHS8HakXxdl3rzPFtWpZORDKxW4+IWtFkUdZzAkaIerXwnqLH+EVEVPCpyXE/37dQiUdWuLMrWpbe1bA2ntj8PA9VA93upiAZh0qoeFHhSdeP2YdyEyIO6Gfy8pMwaEnKecajccI3bR0EWLL71ZEV0+JA0Y/DyPsC6/eFV6UguKMsmGeTGlx0gZtqJqtU1zx1haAl52KLBr1nkjw+VFf6UPVBUgPm3BUh8OmplDbXTXK3MMocHcz73s+5Akr99Vv0/IEs29WwXe71vYVXdVroHA==
+        secure: Vc0OFInaotrbsgoo1JJAxk9e1ckfYyNPv5l3B0rr4R8e7UxCbNKxIIWjUzamL8F+2Y6OeKsn87vIFAIqAQjWZrNrKGmrjBTFzQZ9ksLRNWPWV/f4ZN2xvuWnr7+5le+Kn01k7H36UauF9biaYpMcWrLfGOYJqKlzYZOHIBYXC5tMXerjjt7MKVHRHVipCNdtX9SK3vRChzx66c6pE2atbke+BzwEi68b9VhJnEFWKcNqurK5PBaU7ViRMlFKxFVCF7t4VhXMrsXGHbefuHsPMq+UOznqW7iAqId8X251z1bBjRy7ZED7ywqDBunNH/3X+ceOxnn1KFStwouqc/jJIQ==
 
   - name: backend_secret_key_env
     type: params
