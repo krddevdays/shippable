@@ -59,7 +59,7 @@ resources:
     type: params
     versionTemplate:
       params:
-        secure: jwwWxI/6g6AyQwiQMne80XmQo3TxLTrikQR9lutYBW7EXSq5hb8A+hvc0aKFwvzHrnU4HtEjCWcjL7Hq9ww94AWz1jDQNDhTyJjmmyjtRCrS7GaZmT07CqK/cTlLGZswdFMjd+8blcwdpstbxDMfq3KktoIsBFLii13buRMso28K26RdAlPogcSPCYZhNj8cUJJ+y33SgDiinXsO0xX1hIToaUyMvG4E0VY+8vVgRiMWWMt3zUUSWA0hU7LFcMW98QjiS7G75i/jubQ1ZMpCtWlcWB7/+AfJiIJ06IeRVOO0odUf1MXL45F92HRa6lm7KHOecNpOWTRlzllt7n7xJg==
+        secure: NyrDLpPnb9limbDo/O+vAvO5PP1iP/eWjHkBfak9dskD69Ia5ujXEFaUjVQ6cPmhPYMKKVomXzxZdI03lUvAUz6Cd1ueBJ9SHF9BdE9o8s360NsIGKYqcuZR5GFWf8waRTfbCvoFj76M+JkfFHMW4f3b7LW/LIE/zyNHwDymaz1Ib04xzL/GAl/NSSBGiR7mnyUpX+2Ogf2tfgx2u80dzFaRja+Em01wLvoGdcT4X4IYIIKqdH+nK/b99VSdW9kdE4VFoZuFwbuZoFlvgzZqfTFDnOYONeD+n9JEERzGX/yej7Fhe50AqDBkxfQOyHFK1AYqiMkzRO5sMw/MZneA3g==
 
   - name: yandex_env
     type: params
